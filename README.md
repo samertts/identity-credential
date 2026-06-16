@@ -1,32 +1,29 @@
 # Universal Identity & Credential Management Platform (UICMP)
 
-UICMP is a professional offline-only Windows desktop platform for identity and credential lifecycle management. It is designed for government institutions, healthcare organizations, universities, private companies, and other entities that require audited, versioned, certification-driven credential operations without cloud or internet dependencies.
+This repository currently contains the **Architecture Package v1.0** for UICMP, an enterprise-grade, Windows desktop, offline-only identity and credential lifecycle management platform.
 
-## V1 Architecture Baseline
+The package is documentation-only by design. It intentionally contains no implementation code, prototypes, or screenshots. The specifications translate the Master Project Specification into implementation-ready guidance for future Python, PySide6, SQLite, SQLAlchemy, Pydantic, ReportLab, OpenCV, Pillow, qrcode, and pytest development.
 
-The repository is organized around Clean Modular Architecture:
+## Architecture Package v1.0 Deliverables
 
-- `src/uicmp/presentation`: PySide6 desktop UI and view models only.
-- `src/uicmp/application`: service layer, workflows, validation orchestration, and ports.
-- `src/uicmp/domain`: framework-independent entities, lifecycle states, and policies.
-- `src/uicmp/infrastructure`: adapters for offline resources, image/PDF/QR/printing, backups, diagnostics, and plugins.
-- `src/uicmp/data`: SQLAlchemy persistence adapters for SQLite V1, with a future migration path to PostgreSQL or SQL Server.
-- `src/uicmp/plugins`: extension points for future RFID, NFC, digital identity, OCR, and access-control integrations.
+1. [System Architecture Specification](docs/architecture-package-v1/01-system-architecture-specification.md)
+2. [Domain Model Specification](docs/architecture-package-v1/02-domain-model-specification.md)
+3. [Database Specification](docs/architecture-package-v1/03-database-specification.md)
+4. [Template Engine Specification](docs/architecture-package-v1/04-template-engine-specification.md)
+5. [Printing Engine Specification](docs/architecture-package-v1/05-printing-engine-specification.md)
+6. [Photo Intelligence Specification](docs/architecture-package-v1/06-photo-intelligence-specification.md)
+7. [Security & Audit Specification](docs/architecture-package-v1/07-security-audit-specification.md)
+8. [Backup & Recovery Specification](docs/architecture-package-v1/08-backup-recovery-specification.md)
+9. [UI/UX Blueprint](docs/architecture-package-v1/09-ui-ux-blueprint.md)
+10. [Development Standards Specification](docs/architecture-package-v1/10-development-standards-specification.md)
+11. [Architecture Review Register](docs/architecture-package-v1/11-review-register.md)
 
-## Core Invariants
+## Non-Negotiable Product Constraints
 
-1. Offline only: no internet, cloud, or network service dependency.
-2. No physical delete: records are archived and versioned.
-3. Everything audited: lifecycle-changing service operations emit audit events.
-4. Certification required: production credential generation requires a certified template version.
-5. UI isolation: presentation code must call application services and must not access the database directly.
-6. Plugin ready: future integrations must use ports/adapters and avoid core redesign.
-
-## Development
-
-```bash
-pytest -q
-python -m compileall -q src tests
-```
-
-The `pyproject.toml` declares the target production stack: Python, PySide6, SQLAlchemy, Pydantic, ReportLab, OpenCV, Pillow, qrcode, and pytest.
+- Offline only; no cloud services, internet dependency, online verification, or telemetry.
+- Windows desktop application built with Python and PySide6.
+- SQLite for V1, with repository and unit-of-work boundaries that allow future PostgreSQL or SQL Server migration.
+- Clean Architecture with no business logic in the UI and no direct database access from presentation code.
+- No physical delete; archive, revoke, expire, and supersede records instead.
+- Everything versioned, auditable, configuration driven, and designed for plugin expansion.
+- Template certification and credential approval are mandatory production gates.
